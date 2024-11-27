@@ -1,0 +1,14 @@
+set LIB_NAME "tcbn90gtc.db"
+
+set LIB_SEARCH_PATH "/opt/tools/synopsys/syn/V-2023.12-SP4/libraries/syn \
+                 /opt/pdk/tsmc90/tcbn90g_110a/digital/Front_End/timing_power/tcbn90g_110a/"
+
+set synlib "/opt/tools/synopsys/syn/V-2023.12-SP4/libraries/syn/dw_foundation.sldb"
+
+set synthetic_library                   "${synthetic_library} ${synlib} /opt/tools/synopsys/syn/V-2023.12-SP4/libraries/syn/standard.sldb";
+
+#library setup
+set search_path ${LIB_SEARCH_PATH}
+set target_library ${LIB_NAME}
+set link_library "* ${LIB_NAME} ${synthetic_library}"
+
