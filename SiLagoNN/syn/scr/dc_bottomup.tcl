@@ -40,59 +40,59 @@ set SYN_DIR ../syn;              # synthesis directory, synthesis scripts constr
 
 #define the process
 proc nth_pass {n} {
-	#3. import the global variables for the process
+    #3. import the global variables for the process
 
-	set prev_n [expr {$n - 1}]
-	exec rm -rf ${OUT_DIR}/pass${n}
-	exec mkdir -p ${OUT_DIR}/pass${n}
-	remove_design -all
-	
-	#4. Anayze the files in ${SOURCE_DIR}/pkg_hierarchy.txt. These files only contain variable definitions so you don't need to elaborate them
-	
-	#Next we will compile divider_pipe first, ${SOURCE_DIR}/mtrf/DPU/divider_pipe.vhd. As the divider is a big structure We would like to import constraints in the next pass over divider pipe
-	#5. analyze divider_pipe
-	#6. elaborate divider_pipe
-	#7. set the current design to divider_pipe
-	#8. link
-	#9. uniquify
-	#10 source the top constraints file
-	if  {$n > 1} {
-	    #11. source constraints of divider pipe from previous pass
-	}
-	#11. compile
-	
-	# We will compile the "silego" entity, which is identical for all the tiles. We will also import its constraints for the next pass.
-	#12. analyze silego, use silego_hierarchy.
-	#13. elaborate silego
-	#14. set the current design to silego
-	#15. link
-	#16. uniquify
-	#17. source the top constraints file
-	if {$n > 1} {
-		#18. source the silego constraints file from the previous pass
-    	}
-	#19. set dont touch attribute for divider_pipe
-	#20. compile
+    set prev_n [expr {$n - 1}]
+    exec rm -rf ${OUT_DIR}/pass${n}
+    exec mkdir -p ${OUT_DIR}/pass${n}
+    remove_design -all
+    
+    #4. Anayze the files in ${SOURCE_DIR}/pkg_hierarchy.txt. These files only contain variable definitions so you don't need to elaborate them
+    
+    #Next we will compile divider_pipe first, ${SOURCE_DIR}/mtrf/DPU/divider_pipe.vhd. As the divider is a big structure We would like to import constraints in the next pass over divider pipe
+    #5. analyze divider_pipe
+    #6. elaborate divider_pipe
+    #7. set the current design to divider_pipe
+    #8. link
+    #9. uniquify
+    #10 source the top constraints file
+    if  {$n > 1} {
+        #11. source constraints of divider pipe from previous pass
+    }
+    #11. compile
+    
+    # We will compile the "silego" entity, which is identical for all the tiles. We will also import its constraints for the next pass.
+    #12. analyze silego, use silego_hierarchy.
+    #13. elaborate silego
+    #14. set the current design to silego
+    #15. link
+    #16. uniquify
+    #17. source the top constraints file
+    if {$n > 1} {
+        #18. source the silego constraints file from the previous pass
+        }
+    #19. set dont touch attribute for divider_pipe
+    #20. compile
 
-	#21. analyze Silago_top
+    #21. analyze Silago_top
         #22. elaborate Silago_top
-	#23. set current design to Silago_top
-	#24. link
-	#25. uniquify
-	#26. source the top constraints
-	#27. set dont touch for silego and divider pipe
-	#28. compile
+    #23. set current design to Silago_top
+    #24. link
+    #25. uniquify
+    #26. source the top constraints
+    #27. set dont touch for silego and divider pipe
+    #28. compile
 
-	# Repeat 21. to 28. for the remaining unique tile designs: Silago_bot, Silago_top_left_corner, Silago_top_right_corner, Silago_bot_left_corner, Silago_bot_right_corner
-	
-	#29. analyze drra_wrapper
-    	#30. elaborate drra_wrapper
-	#31. set current design to drra_wrapper
-	#32. set dont touch for divider pipe and ALL tiles
-    	#33. source constraints
-    	#34. report timing of drra wrapper in the current pass
-	#35. write_ddc from the current pass
-    	#36. characterize constraints of silego and divider_pipe
+    # Repeat 21. to 28. for the remaining unique tile designs: Silago_bot, Silago_top_left_corner, Silago_top_right_corner, Silago_bot_left_corner, Silago_bot_right_corner
+    
+    #29. analyze drra_wrapper
+        #30. elaborate drra_wrapper
+    #31. set current design to drra_wrapper
+    #32. set dont touch for divider pipe and ALL tiles
+        #33. source constraints
+        #34. report timing of drra wrapper in the current pass
+    #35. write_ddc from the current pass
+        #36. characterize constraints of silego and divider_pipe
 }
 
 #EXECUTE N PASSES OF THE ABOVE FUNCTION. DECIDE ON A REASONABLE N.
