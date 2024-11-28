@@ -1,0 +1,30 @@
+# ModelSim log and temporary files
+vsim.wlf
+*.wlf
+*.log
+*.syn
+*.vcd
+transcript
+*.lxt
+*.lxt2
+*.vstf
+*.rpt
+*.jou
+*.svf
+*.cmp
+
+# Compiled library files
+work/
+work/*
+dware/
+dware/*
+*.db
+*.o
+*.out
+*.obj
+
+# Backup and autosave files
+*~
+*.bak
+*.swp
+*.swo
