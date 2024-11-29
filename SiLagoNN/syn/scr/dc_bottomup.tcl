@@ -43,7 +43,7 @@ set SYN_DIR ../syn;              # synthesis directory, synthesis scripts constr
 #define the process
 proc nth_pass {n} {
     #3. import the global variables for the process
-    global SOURCE_DIR SYN_DIR OUT_DIR TOP_NAME
+    global SOURCE_DIR SYN_DIR OUT_DIR TOP_NAME REPORT_DIR
 
     set prev_n [expr {$n - 1}]
     exec rm -rf ${OUT_DIR}/pass${n}
@@ -52,13 +52,13 @@ proc nth_pass {n} {
     
     #4. Anayze the files in ${SOURCE_DIR}/pkg_hierarchy.txt. These files only contain variable definitions so you don't need to elaborate them
     set hierarchy_files [split [read [open ${SOURCE_DIR}/pkg_hierarchy.txt r]] "\n"]
-    foreach file $hierarchy_files {
-        analyze -format vhdl -lib WORK {"${SOURCE_DIR}/$file"}
+    foreach filename [lrange ${hierarchy_files} 0 end-1] {
+        analyze -format vhdl -lib WORK "${SOURCE_DIR}/${filename}"
     }
     
     #Next we will compile divider_pipe first, ${SOURCE_DIR}/mtrf/DPU/divider_pipe.vhd. As the divider is a big structure We would like to import constraints in the next pass over divider pipe
     #5. analyze divider_pipe
-    analyze -format vhdl -lib WORK {"${SOURCE_DIR}/mtrf/DPU/divider_pipe.vhd"}
+    analyze -format vhdl -lib WORK "${SOURCE_DIR}/mtrf/DPU/divider_pipe.vhd"
     #6. elaborate divider_pipe
     elaborate divider_pipe
     #7. set the current design to divider_pipe
@@ -79,7 +79,10 @@ proc nth_pass {n} {
     
     # We will compile the "silego" entity, which is identical for all the tiles. We will also import its constraints for the next pass.
     #12. analyze silego, use silego_hierarchy.
-    analyze -format vhdl -lib WORK {"${SOURCE_DIR}/mtrf/silego.vhd"}
+    set hierarchy_files [split [read [open ${SOURCE_DIR}/silego_hierarchy.txt r]] "\n"]
+    foreach filename [lrange ${hierarchy_files} 0 end-1] {
+        analyze -format vhdl -lib WORK "${SOURCE_DIR}/${filename}"
+    }
     #13. elaborate silego
     elaborate silego
     #14. set the current design to silego
@@ -93,7 +96,7 @@ proc nth_pass {n} {
     if {$n > 1} {
         #18. source the silego constraints file from the previous pass
         source ${OUT_DIR}/pass${prev_n}/silego.wscr
-        }
+    }
     #19. set dont touch attribute for divider_pipe
     dont_touch divider_pipe true
     #20. compile
@@ -101,7 +104,7 @@ proc nth_pass {n} {
     # compile -map_effort high -incremental
 
     #21. analyze Silago_top
-    analyze -format vhdl -lib WORK {"${SOURCE_DIR}/mtrf/Silago_top.vhd"}
+    analyze -format vhdl -lib WORK "${SOURCE_DIR}/mtrf/Silago_top.vhd"
     #22. elaborate Silago_top
     elaborate Silago_top
     #23. set current design to Silago_top
@@ -122,7 +125,7 @@ proc nth_pass {n} {
     # Repeat 21. to 28. for the remaining unique tile designs: Silago_bot, Silago_top_left_corner, Silago_top_right_corner, Silago_bot_left_corner, Silago_bot_right_corner
     foreach tile {Silago_bot Silago_top_left_corner Silago_top_right_corner Silago_bot_left_corner Silago_bot_right_corner} {
         #21. analyze $tile
-        analyze -format vhdl -lib WORK {"${SOURCE_DIR}/mtrf/${tile}.vhd"}
+        analyze -format vhdl -lib WORK "${SOURCE_DIR}/mtrf/${tile}.vhd"
         #22. elaborate $tile
         elaborate $tile
         #23. set current design to $tile
@@ -142,11 +145,14 @@ proc nth_pass {n} {
     }
     
     #29. analyze drra_wrapper
-    analyze -format vhdl -lib WORK {"${SOURCE_DIR}/mtrf/drra_wrapper.vhd"}
+    analyze -format vhdl -lib WORK "${SOURCE_DIR}/mtrf/drra_wrapper.vhd"
     #30. elaborate drra_wrapper
     elaborate drra_wrapper
     #31. set current design to drra_wrapper
     current_design drra_wrapper
+
+    link
+
     #32. set dont touch for divider pipe and ALL tiles
     dont_touch divider_pipe true
     foreach tile {Silago_bot Silago_top_left_corner Silago_top_right_corner Silago_bot_left_corner Silago_bot_right_corner} {
@@ -157,13 +163,20 @@ proc nth_pass {n} {
     #34. report timing of drra wrapper in the current pass
     report_timing
     #35. write_ddc from the current pass
-    write_ddc ${OUT_DIR}/pass${n}/drra_wrapper.wscr
+    write_file -format ddc -output ${OUT_DIR}/pass${n}/drra_wrapper.ddc
+
     #36. characterize constraints of silego and divider_pipe
-    characterize -constraint {silego divider_pipe}
+    characterize -constraint {Silago_top_inst_1_0/SILEGO_cell \
+    Silago_top_inst_1_0/SILEGO_cell/MTRF_cell/dpu_gen/U_NACU_0/U_divider}
+
+    current_design silego
+    write_script > ${OUT_DIR}/pass${n}/silego.wscr
+    current_design divider_pipe
+    write_script > ${OUT_DIR}/pass${n}/divider_pipe.wscr
 }
 
 #EXECUTE N PASSES OF THE ABOVE FUNCTION. DECIDE ON A REASONABLE N.
-for {set i 1} {$i <= 3} {incr i} {
+for {set i 1} {$i <= 2} {incr i} {
     nth_pass $i
 }
 
@@ -173,6 +186,7 @@ current_design drra_wrapper
 report_area > ${REPORT_DIR}/${TOP_NAME}_area.txt
 report_timing > ${REPORT_DIR}/${TOP_NAME}_timing.txt
 report_power > ${REPORT_DIR}/${TOP_NAME}_power.txt
+report_cell > ${REPORT_DIR}/${TOP_NAME}_cell.txt
 
 #39. Write the netlist, ddc, sdc and sdf.
 write_file -hierarchy -format ddc -output ${OUT_DIR}/${TOP_NAME}.ddc

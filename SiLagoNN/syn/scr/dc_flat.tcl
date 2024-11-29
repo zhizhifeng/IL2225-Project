@@ -41,18 +41,18 @@ set SOURCE_DIR ../rtl;           # rtl code that should be synthesised
 set SYN_DIR ../syn;              # synthesis directory, synthesis scripts constraints etc.
 
 #3. set hierarchy file to read the design 
-set hierarchy_files [split [read [open ${SOURCE_DIR}/${TOP_NAME}_hierarchy.txt r]] "\n"]
+set hierarchy_files [split [read [open ${SOURCE_DIR}/drra_wrapper_hierarchy.txt r]] "\n"]
 #4. analyze design
 foreach filename [lrange ${hierarchy_files} 0 end-1] {
     puts "${filename}"
     analyze -format VHDL -lib WORK "${SOURCE_DIR}/${filename}"
 }
 #5. elaborate the design, link, and uniquify
-elaborate ${TOP_NAME}
+elaborate drra_wrapper
 link
 uniquify
 #6. set current_design 
-current_design ${TOP_NAME}
+current_design drra_wrapper
 #7. set wireload model
 set_wire_load_mode segmented
 set_wire_load_model -name TSMC8K_Lowk_Aggresive
