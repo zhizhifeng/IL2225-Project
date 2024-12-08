@@ -70,4 +70,5 @@ report_cell > ${REPORT_DIR}/${TOP_NAME}_cell.txt
 #11. export the netlist, ddc and sdf file in out direcory with a suitable name
 write_file -hierarchy -format ddc -output ${OUT_DIR}/${TOP_NAME}.ddc
 write_file -hierarchy -format verilog -output ${OUT_DIR}/${TOP_NAME}.v
+write_sdc ${OUT_DIR}/${TOP_NAME}.sdc
 write_sdf ${OUT_DIR}/${TOP_NAME}.sdf

@@ -32,7 +32,7 @@
 #1. source setup file to extract global libraries
 source ../syn/synopsys_dc.setup
 #2. set the TOP_NAME of the design
-set TOP_NAME silego
+set TOP_NAME drra_wrapper
 
 # Directories for output material
 set REPORT_DIR  ../syn/rpt/task3;      # synthesis reports: timing, area, etc.
@@ -191,4 +191,5 @@ report_cell > ${REPORT_DIR}/${TOP_NAME}_cell.txt
 #39. Write the netlist, ddc, sdc and sdf.
 write_file -hierarchy -format ddc -output ${OUT_DIR}/${TOP_NAME}.ddc
 write_file -hierarchy -format verilog -output ${OUT_DIR}/${TOP_NAME}.v
+write_sdc ${OUT_DIR}/${TOP_NAME}.sdc
 write_sdf ${OUT_DIR}/${TOP_NAME}.sdf
