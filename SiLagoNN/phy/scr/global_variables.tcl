@@ -7,8 +7,8 @@ set OUTPUT_DIR "../phy/db"
 set RPT_DIR    "../phy/rpt"
 set SCR_DIR    "../phy/scr"
 #we need a part directory where partitions are created
-set PART_DIR   "../phy/db/part/"
-set SRC_DIR    "../syn/db/"
+set PART_DIR   "../phy/db/part"
+set SRC_DIR    "../syn/db/task2"
 
 set LEF_FILE "/opt/pdk/tsmc90/tcbn90g_110a/digital/Back_End/lef/tcbn90g_110a/lef/tcbn90g_9lm.lef"
 set MMMC_FILE         "${SCR_DIR}/mmmc.tcl"
