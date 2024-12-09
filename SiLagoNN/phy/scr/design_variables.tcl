@@ -1,7 +1,7 @@
 # list of partition *hinst* names (this is usually the instantiation label)
 set master_partition_hinst_list {
-        Silago_top_inst_2_0 \
-        Silago_bot_inst_2_1 \
+        Silago_top_inst_6_0 \
+        Silago_bot_inst_6_1 \
         Silago_top_l_corner_inst_0_0 \
         Silago_bot_l_corner_inst_0_1 \
         Silago_top_r_corner_inst_7_0 \
