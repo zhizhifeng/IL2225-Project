@@ -1,0 +1,16 @@
+BASE_DIR="/home/yurunc/Documents/IL2225_project/SiLagoNN"
+
+
+cd $BASE_DIR/task2
+dc_shell -f ../syn/scr/dc_flat.tcl | tee a_shell_output.log
+
+cd $BASE_DIR/task3
+dc_shell -f ../syn/scr/dc_bottomup.tcl | tee a_shell_output.log
+
+cd $BASE_DIR/task4
+innovus -stylus -batch -files ../phy/scr/innovus_flat.tcl
+
+cd $BASE_DIR/task5
+innovus -stylus -batch -files ../phy/scr/innovus_flat_fp.tcl
+
+$BASE_DIR/phy/scr/hrchy.sh
