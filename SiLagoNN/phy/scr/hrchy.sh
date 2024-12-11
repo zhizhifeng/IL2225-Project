@@ -1,13 +1,13 @@
 BASE_DIR="/home/yurunc/Documents/IL2225_project/SiLagoNN"
-
-source ../phy/scr/global_variables_hrchy.tcl
-source ../phy/scr/design_variables.tcl
+export TOP_NAME="drra_wrapper"
 
 cd $BASE_DIR/task6
 innovus -stylus -no_gui -batch -files ../phy/scr/create_partitions.tcl -log "../log/create_partitions_${TIMESTAMP}.log ../log/create_partitions_${TIMESTAMP}.cmd ../log/create_partitions_${TIMESTAMP}.logv"
 
 # run pnr_partition.sh
 $BASE_DIR/phy/scr/pnr_partition.sh
+
+wait
 
 #run pnr_top.tcl
 cd $BASE_DIR/task6
