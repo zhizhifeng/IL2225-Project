@@ -167,7 +167,7 @@ proc nth_pass {n} {
 
     #36. characterize constraints of silego and divider_pipe
     characterize -constraint {Silago_top_inst_1_0/SILEGO_cell \
-    Silago_top_inst_1_0/SILEGO_cell/MTRF_cell/dpu_gen/U_NACU_0/U_divider}
+        Silago_top_inst_1_0/SILEGO_cell/MTRF_cell/dpu_gen/U_NACU_0/U_divider}
 
     current_design silego
     write_script > ${OUT_DIR}/pass${n}/silego.wscr
@@ -186,6 +186,7 @@ current_design drra_wrapper
 report_area > ${REPORT_DIR}/${TOP_NAME}_area.txt
 report_timing > ${REPORT_DIR}/${TOP_NAME}_timing.txt
 report_power > ${REPORT_DIR}/${TOP_NAME}_power.txt
+report_constraints > ${REPORT_DIR}/${TOP_NAME}_constraints.txt
 report_cell > ${REPORT_DIR}/${TOP_NAME}_cell.txt
 
 #39. Write the netlist, ddc, sdc and sdf.
