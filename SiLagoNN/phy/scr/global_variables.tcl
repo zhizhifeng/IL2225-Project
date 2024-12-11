@@ -12,5 +12,5 @@ set SRC_DIR    "../syn/db/task2"
 
 set LEF_FILE "/opt/pdk/tsmc90/tcbn90g_110a/digital/Back_End/lef/tcbn90g_110a/lef/tcbn90g_9lm.lef"
 set MMMC_FILE         "${SCR_DIR}/mmmc.tcl"
-set NETLIST_FILE       "${SRC_DIR}/${TOP_NAME}.v"
-set SDC_FILES          "${SRC_DIR}/${TOP_NAME}.sdc"
+set NETLIST_FILE      "${SRC_DIR}/${TOP_NAME}.v"
+set SDC_FILES         "${SRC_DIR}/${TOP_NAME}.sdc"
