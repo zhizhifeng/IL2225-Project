@@ -7,12 +7,10 @@ innovus -stylus -no_gui -batch -files ../phy/scr/create_partitions.tcl -log "../
 # run pnr_partition.sh
 $BASE_DIR/phy/scr/pnr_partition.sh
 
-wait
-
 #run pnr_top.tcl
 cd $BASE_DIR/task6
 innovus -stylus -no_gui -batch -files ../phy/scr/pnr_top.tcl -log "../log/pnr_top_${TIMESTAMP}.log ../log/pnr_top_${TIMESTAMP}.cmd ../log/pnr_top_${TIMESTAMP}.logv"
 
 #run assemble_design.tcl
 cd $BASE_DIR/task6
-innovus -stylus -no_gui -batch -files ../phy/scr/assemble_design.tcl -log "../log/assemble_design_${TIMESTAMP}.log ../log/assemble_design_${TIMESTAMP}.cmd ../log/assemble_design_${TIMESTAMP}.logv"
+innovus -stylus -files ../phy/scr/assemble_design.tcl -log "../log/assemble_design_${TIMESTAMP}.log ../log/assemble_design_${TIMESTAMP}.cmd ../log/assemble_design_${TIMESTAMP}.logv"
